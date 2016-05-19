@@ -1,14 +1,20 @@
-var url = 'https://r-p-s-game.firebaseio.com/';
 
+var url = 'https://r-p-s-game.firebaseio.com/';
 var dataRef = new Firebase(url);
 
-	var addTrain = function(){
-	
+var trainName = '';
+var destination = '';
+var frequency = 0;
+var uTc = '';
 
-		var trainName = $('#name').val().trim();
-		var destination = $('#destination').val().trim();
-		var frequency = $('#freq').val().trim();
-		var uTc = $('#time').val().trim();
+
+
+$('#infoSubmit').on('click', function(){
+
+		trainName = $('#name').val().trim();
+		destination = $('#destination').val().trim();
+		frequency = $('#freq').val().trim();
+		uTc = $('#time').val().trim();
 
 		dataRef.push({
 			name: trainName,
@@ -23,21 +29,26 @@ var dataRef = new Firebase(url);
 		$('#time').val('');
 
 		return false;
-	};
 
-
-
-$('#infoSubmit').on('click', addTrain());
+});
 
 dataRef.on('child_added', function(childSnapshot){
 
-		console.log(childSnapshot.val().name);
-		console.log(childSnapshot.val().place);
-		console.log(childSnapshot.val().frequency);
-		console.log(childSnapshot.val().militaryTime);
+//		console.log(childSnapshot.val().name);
+//		console.log(childSnapshot.val().place);
+//		console.log(childSnapshot.val().frequency);
+//		console.log(childSnapshot.val().militaryTime);
+
+		var table = $('#appendTable');
+		var row = $('<tr>');
+
+		row.append('<td>' + childSnapshot.val().name + '</td>');
+		row.append('<td>' + childSnapshot.val().place + '</td>');
+		row.append('<td>' + childSnapshot.val().frequency + '</td>');
+		table.append(row)
 
 }, function (errorObject){
-
+	console.log('There was an error retrieving data');
 });
 
 
